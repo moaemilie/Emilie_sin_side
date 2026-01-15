@@ -17,7 +17,7 @@ export default function PixelWalker() {
   }, []);
 
   return (
-    <div className="fixed left-20 pointer-events-none" style={{ top: "50vh" }}>
+    <div className="fixed left-20 pointer-events-none" style={{ top: "45vh" }}>
       <img
         src={
           imageIndex === 0

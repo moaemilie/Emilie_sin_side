@@ -7,12 +7,6 @@ export default function CvContent() {
 
   return (
     <div className="w-2/3 mx-auto flex h-screen overflow-hidden justify-center">
-      {/* Venstre side med pixelart scroll */}
-      <div className="w-1/5 flex flex-col items-center text-gray-600 justify-center relative p-8">
-        Her skal scrolle elementet
-      </div>
-
-      {/* Høyre side med CV*/}
       <div
         className="w-4/5 p-12"
         style={{
