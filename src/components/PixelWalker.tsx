@@ -21,11 +21,11 @@ export default function PixelWalker() {
       <img
         src={
           imageIndex === 0
-            ? "/images/Pixel_art_1.jpeg"
-            : "/images/Pixel_art_2.jpeg"
+            ? "/images/Emilie_pixel_walk_1.png"
+            : "/images/Emilie_pixel_walk_2.png"
         }
         alt="Pixel walker"
-        className="w-20 h-20 object-contain"
+        className="w-40 h-40 object-contain"
       />
     </div>
   );
