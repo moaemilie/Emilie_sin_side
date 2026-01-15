@@ -3,7 +3,6 @@
 import { getCVSections } from "../../lib/cv";
 
 export default function CvContent() {
-
   const sections = getCVSections();
 
   return (
