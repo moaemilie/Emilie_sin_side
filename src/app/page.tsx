@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Header from "@/components/Header";
-import Scoller from "@/components/CvContent";
+import CvContent from "@/components/CvContent";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
         <p className="text-2xl font-bold">
           Dette er Emilie sin nettside hvor det skal bli vist hennes reise
         </p>
-        <Scoller />
+        <CvContent />
       </main>
     </div>
   );

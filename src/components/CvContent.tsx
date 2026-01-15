@@ -1,11 +1,10 @@
 // import { useState, useRef, useEffect } from "react";
 import { PixelScene } from "./PixelScene";
 import { PixelCharacter } from "./PixelCharacter";
-import CV_SECTIONS from "../data/cv_sections";
 
 import { getCVSections } from "../../lib/cv";
 
-export default function Pixel_Scroller() {
+export default function CvContent() {
   //const [scrollProgress, setScrollProgress] = useState(0);
   //const [currentSection, setCurrentSection] = useState(0);
   // const contentRef = useRef<HTMLDivElement>(null);
