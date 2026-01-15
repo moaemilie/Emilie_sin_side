@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Header from "@/components/Header";
-import Scoller from "@/components/Scroller";
+import Scoller from "@/components/CvContent";
 
 export default function Home() {
   return (

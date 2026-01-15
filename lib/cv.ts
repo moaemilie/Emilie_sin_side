@@ -13,6 +13,6 @@ export function getCVSections(): CVSection[] {
   const stmt = db.prepare(
     "SELECT id, title, content, pxl_art FROM cv_sections"
   );
-  const sections: CVSection[] = stmt.all();
+  const sections = stmt.all() as CVSection[];
   return sections;
 }
