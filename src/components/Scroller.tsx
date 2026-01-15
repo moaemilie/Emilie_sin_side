@@ -35,17 +35,16 @@ export default function Pixel_Scroller() {
   }, []);
 
   return (
-    <div className="flex h-screen w-full bg-gray-900 overflow-hidden">
+    <div className="w-2/3 mx-auto flex h-screen bg-gray-900 overflow-hidden justify-center">
       {/* Left Side - Pixel Art */}
-      <div className="w-1/2 flex flex-col items-center justify-center bg-gray-800 relative p-8">
-        <PixelScene scrollProgress={scrollProgress} />
-        <PixelCharacter scrollProgress={scrollProgress} />
+      <div className="w-1/5 flex flex-col items-center justify-center bg-gray-800 relative p-8">
+        Her skal scrolle elementet
       </div>
 
       {/* Right Side - Scrollable Text */}
       <div
         ref={contentRef}
-        className="w-1/2 overflow-y-scroll bg-gray-900 p-12"
+        className="w-4/5 p-12"
         style={{
           scrollBehavior: "smooth",
         }}
@@ -57,7 +56,7 @@ export default function Pixel_Scroller() {
 
           {CV_SECTIONS.map((section) => (
             <div key={section.id} className="mb-12">
-              <h2 className="text-3xl font-bold text-cyan-400 mb-4 pixel-font">
+              <h2 className="text-3xl font-bold mb-4 pixel-font">
                 {section.title}
               </h2>
               <p className="text-gray-300 leading-relaxed text-lg">
@@ -70,23 +69,6 @@ export default function Pixel_Scroller() {
         </div>
       </div>
 
-      {/* Scrollbar indicator */}
-      <style jsx>{`
-        div::-webkit-scrollbar {
-          width: 8px;
-        }
-        div::-webkit-scrollbar-track {
-          background: #1f2937;
-        }
-        div::-webkit-scrollbar-thumb {
-          background: #06b6d4;
-          border-radius: 4px;
-        }
-        .pixel-font {
-          font-family: "Courier New", monospace;
-          letter-spacing: 2px;
-        }
-      `}</style>
     </div>
   );
 }
