@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f9f9ed;
-  --foreground: #d9dbf1;
+  --background: #daebff;
+  --foreground: #c8e1ff;
   --header: #000000;
 
   --paragraph: #4a4e69;
@@ -16,21 +16,28 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #ededed;
     --foreground: #ededed;
   }
+} */
+
+html,
+body {
+  height: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 header {
-  color: var(--foreground);
+  color: var(--background);
 }
 
 h1 {
@@ -40,4 +47,19 @@ h1 {
 p {
   color: var(--paragraph);
   font-family: "Baufra", Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-foreground {
+    color: var(--foreground);
+  }
+  .bg-foreground {
+    background-color: var(--foreground);
+  }
+  .text-background {
+    color: var(--background);
+  }
+  .bg-background {
+    background-color: var(--background);
+  }
 }
