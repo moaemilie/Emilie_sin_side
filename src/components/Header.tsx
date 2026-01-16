@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import SocialLinks from "./SocialLinks";
+import NavLink from "./NavLink";
 
 function Header() {
   return (
@@ -13,12 +16,9 @@ function Header() {
         <SocialLinks />
       </div>
       <nav className="w-full flex items-center justify-center gap-8 py-6">
-        <Link href="/projects" className="px-6 py-3 text-xl text-gray-800">
-          Prosjekter
-        </Link>
-        <Link href="/contact" className="px-6 py-3 text-xl text-gray-800">
-          Kontakt
-        </Link>
+        <NavLink href="/projects">Prosjekter</NavLink>
+        <div className="w-px h-8 bg-gray-400"></div>
+        <NavLink href="/contact">Kontakt</NavLink>
       </nav>
     </>
   );
