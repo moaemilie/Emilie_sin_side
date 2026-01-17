@@ -6,7 +6,7 @@ export default function CvContent() {
   const sections = getCVSections();
 
   return (
-    <div className="w-2/3 mx-auto flex h-screen overflow-hidden justify-center">
+    <div className="w-2/3 mx-auto flex justify-center">
       <div
         className="w-4/5 p-12"
         style={{
@@ -20,10 +20,8 @@ export default function CvContent() {
 
           {sections.map((section: any) => (
             <div key={section.id} className="mb-12">
-              <h2 className="text-3xl text-gray-600 font-bold mb-4">
-                {section.title}
-              </h2>
-              <p className="text-gray-600 leading-relaxed text-lg">
+              <h2 className="text-3xl font-bold mb-4">{section.title}</h2>
+              <p className="leading-relaxed whitespace-pre-line text-lg">
                 {section.content}
               </p>
             </div>

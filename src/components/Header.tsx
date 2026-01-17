@@ -10,7 +10,7 @@ function Header() {
       <div className="flex flex-col items-center justify-center py-6">
         <Link href="/">
           <header className="w-full flex items-center justify-center py-8 pt-25">
-            <h1 className="text-7xl font-bodoni">Emilie Giltvedt Langeland</h1>
+            <h1 className="text-7xl">Emilie Giltvedt Langeland</h1>
           </header>
         </Link>
         <SocialLinks />

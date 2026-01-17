@@ -1,14 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #90b2fa;
-  --foreground: #f0f7ff;
+  --background: #a1cdec;
+  --foreground: #eff9ff;
   --header: #000000;
-
-  --paragraph: #4a4e69;
-
-  --font-bodoni: "Bodoni Moda", serif;
+  --paragraph: #232323;
+  --small-header: #080808;
+  --font-bodoni: var(--font-bodoni), serif;
 }
 
 @theme inline {
@@ -36,16 +34,26 @@ body {
   background: linear-gradient(135deg, var(--background) 0%, #f5f9ff 100%);
   color: var(--foreground);
   font-family: var(--font-bodoni);
+  font-optical-sizing: auto;
   margin: 0;
   padding: 0;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 header {
   color: var(--background);
+  font-family: var(--font-bodoni);
 }
 
 h1 {
   color: var(--header);
+}
+
+h2 {
+  color: var(--small-header);
 }
 
 p {
