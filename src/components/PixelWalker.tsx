@@ -14,6 +14,7 @@ const IMAGES = {
 };
 
 export default function PixelWalker() {
+  const [mounted, setMounted] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [animationState, setAnimationState] =
     useState<AnimationState>("jumping");
@@ -25,8 +26,15 @@ export default function PixelWalker() {
   const accumulatedScrollRef = useRef(0);
   const lastScrollY = useRef(0);
 
+  // Mount detection
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Calculate sideways distance based on screen size
   useEffect(() => {
+    if (!mounted) return;
+
     const calculateMaxDistance = () => {
       // Distance from center (50%) to the left edge of w-2/3 content (16.67%)
       // That's 50% - 16.67% = 33.33% of viewport width
@@ -37,7 +45,7 @@ export default function PixelWalker() {
     calculateMaxDistance();
     window.addEventListener("resize", calculateMaxDistance);
     return () => window.removeEventListener("resize", calculateMaxDistance);
-  }, []);
+  }, [mounted]);
 
   // Jumping animation - video game style (2 jumps, pause, 2 jumps, pause)
   useEffect(() => {
@@ -187,31 +195,76 @@ export default function PixelWalker() {
     }
   };
 
+  // Don't render until mounted to avoid hydration mismatch
+  if (!mounted) return null;
+
   return (
-    <div
-      ref={walkerRef}
-      className="fixed pointer-events-none z-50"
-      style={{
-        left: "50%", // Start in the middle horizontally
-        top: "50vh", // Start in the middle vertically
-        transform: getTransform(),
-        transition:
-          animationState === "jumping"
-            ? "transform 0.15s ease-out"
-            : "transform 0.2s linear",
-      }}
-    >
-      <img
+    <>
+      <div
+        ref={walkerRef}
+        className="fixed pointer-events-none z-50"
         style={{
-          transform:
-            isWalkingBackward && animationState === "movingSideways"
-              ? "scaleX(-1)"
-              : "none",
+          left: "50%", // Start in the middle horizontally
+          top: "calc(50vh + 80px)", // Move down to avoid header overlap
+          transform: getTransform(),
+          transition:
+            animationState === "jumping"
+              ? "transform 0.15s ease-out"
+              : "transform 0.2s linear",
         }}
-        src={getCurrentImage()}
-        alt="Pixel walker"
-        className="w-20 h-20 sm:w-28 sm:h-28 md:w-40 md:h-40 object-contain"
-      />
-    </div>
+      >
+        {/* Speech bubble - only shown when jumping */}
+        {animationState === "jumping" && (
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 sm:mb-3 md:mb-4">
+            {/* Main bubble box */}
+            <div
+              className="
+                relative 
+                w-32 sm:w-40 md:w-48
+                min-h-[50px] sm:min-h-[60px] md:min-h-[70px]
+                px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4
+                flex flex-col justify-center items-center 
+                bg-white
+                shadow-[0_-4px_0_0_#000,0_4px_0_0_#000,-4px_0_0_0_#000,4px_0_0_0_#000]      
+                rounded-none 
+                after:content-[''] after:absolute after:top-2 after:left-2 after:-z-10 after:w-full after:h-full 
+                after:bg-gray-300 after:shadow-[0_-4px_0_0_#d1d5db,0_4px_0_0_#d1d5db,-4px_0_0_0_#d1d5db,4px_0_0_0_#d1d5db]
+              "
+            >
+              <p className="text-xs sm:text-sm md:text-base font-bold text-center text-black">
+                Scroll down!
+              </p>
+            </div>
+
+            {/* Pixel-style arrow tail */}
+            <div className="relative w-full flex justify-center">
+              {/* Arrow made with pixel blocks */}
+              <div className="relative mt-0">
+                {/* Row 1 - widest (8px) */}
+                <div className="w-4 h-1 bg-white border-x-[2px] border-black mx-auto" />
+                {/* Row 2 (6px) */}
+                <div className="w-3 h-1 bg-white border-x-[2px] border-black mx-auto" />
+                {/* Row 3 (4px) */}
+                <div className="w-2 h-1 bg-white border-x-[2px] border-black mx-auto" />
+                {/* Row 4 - tip (2px) */}
+                <div className="w-1 h-1 bg-white border-x-[2px] border-black mx-auto" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <img
+          style={{
+            transform:
+              isWalkingBackward && animationState === "movingSideways"
+                ? "scaleX(-1)"
+                : "none",
+          }}
+          src={getCurrentImage()}
+          alt="Pixel walker"
+          className="w-20 h-20 sm:w-28 sm:h-28 md:w-40 md:h-40 object-contain"
+        />
+      </div>
+    </>
   );
 }

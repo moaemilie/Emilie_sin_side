@@ -6,7 +6,7 @@ export default function CvContent() {
   const sections = getCVSections();
 
   return (
-    <div className="w-2/3 mx-auto flex justify-center">
+    <div className="w-2/3 mx-auto flex justify-center pt-[40vh] sm:pt-[35vh] md:pt-[30vh]">
       <div
         className="w-4/5 p-12"
         style={{
@@ -14,9 +14,6 @@ export default function CvContent() {
         }}
       >
         <div className="max-w-2xl mx-auto">
-          {/*<h1 className="text-4xl font-bold mb-8 pixel-font text-gray-300">
-            My CV
-          </h1>*/}
 
           {sections.map((section: any) => (
             <div key={section.id} className="mb-12">
