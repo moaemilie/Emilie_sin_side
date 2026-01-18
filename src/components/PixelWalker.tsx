@@ -7,8 +7,8 @@ type AnimationState = "jumping" | "movingSideways" | "walkingDown";
 // Image paths - easy to change later
 const IMAGES = {
   stand: "/images/Emilie_pixel_stand.png",
-  walkSideways1: "/images/Emilie_pixel_walk_1.png", // For walking to the side
-  walkSideways2: "/images/Emilie_pixel_walk_2.png", // For walking to the side
+  walkSideways1: "/images/Emilie_pixel_walk_left_1.png", // For walking to the side
+  walkSideways2: "/images/Emilie_pixel_walk_left_3.png", // For walking to the side
   walkDown1: "/images/Emilie_pixel_walk_1.png", // For walking down
   walkDown2: "/images/Emilie_pixel_walk_2.png", // For walking down
 };
@@ -47,7 +47,7 @@ export default function PixelWalker() {
 
   // Scroll detection and handling
   useEffect(() => {
-    const SIDEWAYS_MAX_DISTANCE = 200; // How far to walk to the left
+    const SIDEWAYS_MAX_DISTANCE = 500; // How far to walk to the left
 
     const handleWheel = (e: WheelEvent) => {
       const scrollingDown = e.deltaY > 0;
