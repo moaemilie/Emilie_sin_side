@@ -15,7 +15,7 @@ export default function NavLink({ href, children }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className={`px-6 py-3 text-xl ${
+      className={`nav-link px-6 py-3 text-xl inline-block ${
         isActive ? "text-gray-800 border-b-2 border-gray-800" : "text-gray-800"
       }`}
     >

@@ -74,4 +74,10 @@ p {
   .bg-background {
     background-color: var(--background);
   }
+  .nav-link {
+    text-shadow: 0 0 0 transparent;
+  }
+  .nav-link:hover {
+    text-shadow: 0 0 0.5px currentColor;
+  }
 }

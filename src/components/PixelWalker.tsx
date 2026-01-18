@@ -89,7 +89,7 @@ export default function PixelWalker() {
           e.preventDefault();
           setIsWalkingBackward(false); // Walking left
 
-          accumulatedScrollRef.current += Math.abs(e.deltaY) * 0.5;
+          accumulatedScrollRef.current += Math.abs(e.deltaY) * 1.0;
           setSidewaysDistance(
             Math.min(accumulatedScrollRef.current, maxSidewaysDistance),
           );
@@ -117,7 +117,7 @@ export default function PixelWalker() {
           e.preventDefault();
           setIsWalkingBackward(true); // Walking right
 
-          accumulatedScrollRef.current -= Math.abs(e.deltaY) * 0.5;
+          accumulatedScrollRef.current -= Math.abs(e.deltaY) * 1.0;
           accumulatedScrollRef.current = Math.max(
             0,
             accumulatedScrollRef.current,
