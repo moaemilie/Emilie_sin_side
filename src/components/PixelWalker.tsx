@@ -19,9 +19,25 @@ export default function PixelWalker() {
     useState<AnimationState>("jumping");
   const [jumpPhase, setJumpPhase] = useState(0); // 0-7: jump1, jump2, stand, stand, jump1, jump2, stand, stand
   const [sidewaysDistance, setSidewaysDistance] = useState(0);
+  const [maxSidewaysDistance, setMaxSidewaysDistance] = useState(0);
+  const [isWalkingBackward, setIsWalkingBackward] = useState(false); // Track if walking back to center
   const walkerRef = useRef<HTMLDivElement>(null);
   const accumulatedScrollRef = useRef(0);
   const lastScrollY = useRef(0);
+
+  // Calculate sideways distance based on screen size
+  useEffect(() => {
+    const calculateMaxDistance = () => {
+      // Distance from center (50%) to the left edge of w-2/3 content (16.67%)
+      // That's 50% - 16.67% = 33.33% of viewport width
+      const distanceInVw = window.innerWidth * 0.3333;
+      setMaxSidewaysDistance(distanceInVw);
+    };
+
+    calculateMaxDistance();
+    window.addEventListener("resize", calculateMaxDistance);
+    return () => window.removeEventListener("resize", calculateMaxDistance);
+  }, []);
 
   // Jumping animation - video game style (2 jumps, pause, 2 jumps, pause)
   useEffect(() => {
@@ -47,8 +63,6 @@ export default function PixelWalker() {
 
   // Scroll detection and handling
   useEffect(() => {
-    const SIDEWAYS_MAX_DISTANCE = 500; // How far to walk to the left
-
     const handleWheel = (e: WheelEvent) => {
       const scrollingDown = e.deltaY > 0;
       const currentScroll = window.scrollY;
@@ -59,21 +73,23 @@ export default function PixelWalker() {
           e.preventDefault();
           // Start moving sideways
           setAnimationState("movingSideways");
+          setIsWalkingBackward(false); // Walking left
           accumulatedScrollRef.current = 0;
           setSidewaysDistance(0);
           window.scrollTo(0, 0); // Keep at top
         } else if (animationState === "movingSideways") {
           e.preventDefault();
+          setIsWalkingBackward(false); // Walking left
 
           accumulatedScrollRef.current += Math.abs(e.deltaY) * 0.5;
           setSidewaysDistance(
-            Math.min(accumulatedScrollRef.current, SIDEWAYS_MAX_DISTANCE),
+            Math.min(accumulatedScrollRef.current, maxSidewaysDistance),
           );
 
           window.scrollTo(0, 0); // Keep page at top
 
           // When reached max distance, switch to walking down
-          if (accumulatedScrollRef.current >= SIDEWAYS_MAX_DISTANCE) {
+          if (accumulatedScrollRef.current >= maxSidewaysDistance) {
             setAnimationState("walkingDown");
             // Allow scroll to happen naturally now
           }
@@ -85,11 +101,13 @@ export default function PixelWalker() {
           e.preventDefault();
           // Start moving back to center
           setAnimationState("movingSideways");
-          accumulatedScrollRef.current = SIDEWAYS_MAX_DISTANCE;
-          setSidewaysDistance(SIDEWAYS_MAX_DISTANCE);
+          setIsWalkingBackward(true); // Walking back right
+          accumulatedScrollRef.current = maxSidewaysDistance;
+          setSidewaysDistance(maxSidewaysDistance);
           window.scrollTo(0, 0);
         } else if (animationState === "movingSideways") {
           e.preventDefault();
+          setIsWalkingBackward(true); // Walking right
 
           accumulatedScrollRef.current -= Math.abs(e.deltaY) * 0.5;
           accumulatedScrollRef.current = Math.max(
@@ -103,6 +121,7 @@ export default function PixelWalker() {
           // When back at center, switch to jumping
           if (accumulatedScrollRef.current <= 0) {
             setAnimationState("jumping");
+            setIsWalkingBackward(false);
             window.scrollTo(0, 0);
           }
         }
@@ -130,9 +149,12 @@ export default function PixelWalker() {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchmove", handleWheel as any);
     };
-  }, [animationState]);
+  }, [animationState, maxSidewaysDistance]);
 
   const getTransform = () => {
+    // Base transform to center the image
+    const baseTransform = "translate(-50%, -50%)";
+
     switch (animationState) {
       case "jumping":
         // Video game style jumping: 2 jumps, pause, 2 jumps, pause
@@ -140,15 +162,15 @@ export default function PixelWalker() {
         if (jumpPhase === 0 || jumpPhase === 4) jumpHeight = -30; // First jump of pair
         if (jumpPhase === 1 || jumpPhase === 5) jumpHeight = -35; // Second jump (slightly higher)
         // jumpPhase 2, 3, 6, 7 = standing (0)
-        return `translateY(${jumpHeight}px)`;
+        return `${baseTransform} translateY(${jumpHeight}px)`;
       case "movingSideways":
         // Move to the left or back to center
-        return `translateX(-${sidewaysDistance}px)`;
+        return `${baseTransform} translateX(-${sidewaysDistance}px)`;
       case "walkingDown":
-        // Stay in place while walking animation plays
-        return `translateX(-200px)`;
+        // Stay in place at the left edge
+        return `${baseTransform} translateX(-${maxSidewaysDistance}px)`;
       default:
-        return "";
+        return baseTransform;
     }
   };
 
@@ -172,8 +194,6 @@ export default function PixelWalker() {
       style={{
         left: "50%", // Start in the middle horizontally
         top: "50vh", // Start in the middle vertically
-        marginLeft: "-40px", // Center the image (half of sm width)
-        marginTop: "-40px", // Center the image (half of sm height)
         transform: getTransform(),
         transition:
           animationState === "jumping"
@@ -182,6 +202,12 @@ export default function PixelWalker() {
       }}
     >
       <img
+        style={{
+          transform:
+            isWalkingBackward && animationState === "movingSideways"
+              ? "scaleX(-1)"
+              : "none",
+        }}
         src={getCurrentImage()}
         alt="Pixel walker"
         className="w-20 h-20 sm:w-28 sm:h-28 md:w-40 md:h-40 object-contain"
