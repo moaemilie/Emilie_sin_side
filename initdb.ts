@@ -6,6 +6,7 @@ interface CVSection {
   title: string;
   content: string;
   pxl_art: string | null;
+  pixel_comment: string | null;
 }
 
 const CV_SECTIONS: CVSection[] = [
@@ -14,6 +15,7 @@ const CV_SECTIONS: CVSection[] = [
     title: "Om meg",
     content: `Hei! Jeg heter Emilie og er 26 år gammel. Jeg er vokst opp i Oslo, men tok videregående i Mandal. Jeg har alltid vært interessert i relafag og har derfor gått den veien med all min utdanning. Jeg har derfor fått mye tverrfaglig kunnskap innen blant annet programmering, fysikk og maskinlæring.`,
     pxl_art: "/images/home_small.png",
+    pixel_comment: "Funn fact om meg: Når jeg var liten hadde vi et ekorn!",
   },
   {
     id: "Utdanning",
@@ -27,24 +29,31 @@ const CV_SECTIONS: CVSection[] = [
     I det fjerde året av masterstudiet mitt fikk jeg muligheten til å ta et utvekslingssemester i Belgia. Under dette utvekslingsoppholdet tok jeg kurs i Data Mining, Dynamiske systemer og Statistiske metoder.
     `,
     pxl_art: "/images/NMBU.png",
+    pixel_comment:
+      "NMBU var et fantastisk sted å studere. Master om murstein - hvem hadde trodd det var så spennende?",
   },
   {
     id: "jobb",
     title: "Jobb erfaring",
-    content: `Jeg jobber som utvikler i Innovasjonsteamet i IT-avdelingen i Skatteetaten, hvor jeg utforsker og demonstrerer ny teknologi med fokus på kunstig intelligens og store språkmodeller (LLM-er). I rollen utvikler jeg fullstack-applikasjoner med hovedvekt på frontend i JavaScript/TypeScript og React, samt backend i Node.js og Python. Jeg utvikler i tillegg enkelte løsninger som rene Python-applikasjoner med Gradio. Jeg har hatt ansvar for hele utviklingsprosessen – fra idé og konseptutvikling til ferdig deployet løsning – og bruker Azure som plattform for utrulling og drift. `,
+    content: `Jeg jobber som utvikler i Innovasjonsteamet i IT-avdelingen i Skatteetaten, hvor jeg utforsker og demonstrerer ny teknologi med fokus på kunstig intelligens og store språkmodeller (LLM-er). 
+    
+    I rollen utvikler jeg fullstack-applikasjoner med hovedvekt på frontend i JavaScript/TypeScript og React, samt backend i Node.js og Python. Jeg utvikler i tillegg enkelte løsninger som rene Python-applikasjoner med Gradio. Jeg har hatt ansvar for hele utviklingsprosessen – fra idé og konseptutvikling til ferdig deployet løsning – og bruker Azure som plattform for utrulling og drift. `,
     pxl_art: "/images/office.png",
+    pixel_comment: "AI og LLM-er i Skatteetaten? Det er her magien skjer!",
   },
   {
     id: "Verv",
     title: "Verv",
     content: `Jeg var Karrieredagsansvarlig i Næringslivstuvalget. Her hadde jeg ansvaret for å arrangere karrieredagen ved NMBU. Jeg hadde da ansvaret for både planleggingen og gjenomføringen av arrangementet.`,
     pxl_art: "/images/Verv.png",
+    pixel_comment: "Dette værvet hadde jeg i 1,5år og lærte masse!",
   },
   {
     id: "Idrett",
     title: "Idrett",
     content: `Jeg har tidligere drevet med roing! Dette var en stor del av livet mitt i mange år, og jeg konkurrerte på nasjonalt nivå. Jeg vant blant annet NM i innendørs roing og kom på tredje o dobbelt firrer utendørs. Roing lærte meg mye om sammarbeid og arbeidsinnsats – verdier jeg tar med meg videre i livet.`,
     pxl_art: "/images/rowing.png",
+    pixel_comment: "En bra niche sport! Kan anbefales å prøve en gang.",
   },
 ];
 
@@ -53,8 +62,19 @@ db.prepare(
     id TEXT PRIMARY KEY, 
     title TEXT NOT NULL, 
     content TEXT NOT NULL, 
-    pxl_art TEXT)`,
+    pxl_art TEXT,
+    pixel_comment TEXT)`,
 ).run();
+
+// Add pixel_comment column if it doesn't exist
+try {
+  db.prepare(`ALTER TABLE cv_sections ADD COLUMN pixel_comment TEXT`).run();
+} catch (error: any) {
+  // Column already exists, ignore the error
+  if (!error.message.includes("duplicate column name")) {
+    throw error;
+  }
+}
 
 async function initDB() {
   const stmt = db.prepare(
@@ -62,12 +82,14 @@ async function initDB() {
       id, 
       title, 
       content, 
-      pxl_art) 
+      pxl_art,
+      pixel_comment) 
       VALUES (
       @id, 
       @title, 
       @content, 
-      @pxl_art
+      @pxl_art,
+      @pixel_comment
     )`,
   );
   CV_SECTIONS.forEach((section) => {

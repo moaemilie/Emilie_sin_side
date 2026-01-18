@@ -13,7 +13,11 @@ const IMAGES = {
   walkDown2: "/images/Emilie_pixel_walk_2.png", // For walking down
 };
 
-export default function PixelWalker() {
+interface PixelWalkerProps {
+  activeComment?: string | null;
+}
+
+export default function PixelWalker({ activeComment }: PixelWalkerProps) {
   const [mounted, setMounted] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [animationState, setAnimationState] =
@@ -22,14 +26,34 @@ export default function PixelWalker() {
   const [sidewaysDistance, setSidewaysDistance] = useState(0);
   const [maxSidewaysDistance, setMaxSidewaysDistance] = useState(0);
   const [isWalkingBackward, setIsWalkingBackward] = useState(false); // Track if walking back to center
+  const [showComment, setShowComment] = useState(true); // Controls speech bubble visibility
+  const [displayedComment, setDisplayedComment] = useState<string | null>(null);
   const walkerRef = useRef<HTMLDivElement>(null);
   const accumulatedScrollRef = useRef(0);
   const lastScrollY = useRef(0);
+  const lastCommentRef = useRef<string | null>(null);
 
   // Mount detection
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Handle comment transitions with a brief pause
+  useEffect(() => {
+    if (activeComment !== lastCommentRef.current) {
+      // Hide the bubble
+      setShowComment(false);
+
+      // Wait 300ms, then show the new comment
+      const timer = setTimeout(() => {
+        setDisplayedComment(activeComment);
+        setShowComment(true);
+      }, 300);
+
+      lastCommentRef.current = activeComment;
+      return () => clearTimeout(timer);
+    }
+  }, [activeComment]);
 
   // Calculate sideways distance based on screen size
   useEffect(() => {
@@ -213,14 +237,17 @@ export default function PixelWalker() {
               : "transform 0.2s linear",
         }}
       >
-        {/* Speech bubble - only shown when jumping */}
-        {animationState === "jumping" && (
+        {/* Speech bubble - shown when jumping or when walking down with a comment */}
+        {(animationState === "jumping" ||
+          (animationState === "walkingDown" &&
+            showComment &&
+            displayedComment)) && (
           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 sm:mb-3 md:mb-4">
             {/* Main bubble box */}
             <div
               className="
                 relative 
-                max-w-[200px] sm:max-w-[280px] md:max-w-[360px]
+                max-w-[150px] sm:max-w-[200px] md:max-w-[250px]
                 w-max
                 px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4
                 flex flex-col justify-center items-center 
@@ -232,8 +259,9 @@ export default function PixelWalker() {
               "
             >
               <p className="text-xs sm:text-sm md:text-base font-bold text-center text-black whitespace-normal">
-                Hei! Jeg heter Emilie. Velkommen til siden min. Scroll ned for å
-                lese mer om min bakgrunn!
+                {animationState === "jumping"
+                  ? "Hei! Jeg heter Emilie. Velkommen til siden min. Scroll ned så kan vi se på min bakgrunn sammen!"
+                  : displayedComment || ""}
               </p>
             </div>
 
