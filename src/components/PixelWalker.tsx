@@ -228,11 +228,11 @@ export default function PixelWalker() {
                 shadow-[0_-4px_0_0_#000,0_4px_0_0_#000,-4px_0_0_0_#000,4px_0_0_0_#000]      
                 rounded-none 
                 after:content-[''] after:absolute after:top-2 after:left-2 after:-z-10 after:w-full after:h-full 
-                after:bg-gray-300 after:shadow-[0_-4px_0_0_#d1d5db,0_4px_0_0_#d1d5db,-4px_0_0_0_#d1d5db,4px_0_0_0_#d1d5db]
+                after:bg-gray-300 after:shadosw-[0_-4px_0_0_#d1d5db,0_4px_0_0_#d1d5db,-4px_0_0_0_#d1d5db,4px_0_0_0_#d1d5db]
               "
             >
               <p className="text-xs sm:text-sm md:text-base font-bold text-center text-black whitespace-normal">
-                Hei! Jeg heter Emilie. Velkommen til siden min, scroll ned for å
+                Hei! Jeg heter Emilie. Velkommen til siden min. Scroll ned for å
                 lese mer om min bakgrunn!
               </p>
             </div>
