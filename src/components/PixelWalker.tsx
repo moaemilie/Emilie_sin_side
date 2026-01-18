@@ -45,7 +45,7 @@ export default function PixelWalker() {
 
     const jumpInterval = setInterval(() => {
       setJumpPhase((prev) => (prev + 1) % 8);
-    }, 200); // Slower for visible jumps
+    }, 250);
 
     return () => clearInterval(jumpInterval);
   }, [animationState]);
