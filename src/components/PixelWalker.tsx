@@ -205,7 +205,7 @@ export default function PixelWalker() {
         className="fixed pointer-events-none z-50"
         style={{
           left: "50%", // Start in the middle horizontally
-          top: "calc(50vh + 80px)", // Move down to avoid header overlap
+          top: "calc(50vh + 120px)", // Move down to avoid header overlap
           transform: getTransform(),
           transition:
             animationState === "jumping"
@@ -220,8 +220,8 @@ export default function PixelWalker() {
             <div
               className="
                 relative 
-                w-32 sm:w-40 md:w-48
-                min-h-[50px] sm:min-h-[60px] md:min-h-[70px]
+                max-w-[200px] sm:max-w-[280px] md:max-w-[360px]
+                w-max
                 px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4
                 flex flex-col justify-center items-center 
                 bg-white
@@ -231,8 +231,9 @@ export default function PixelWalker() {
                 after:bg-gray-300 after:shadow-[0_-4px_0_0_#d1d5db,0_4px_0_0_#d1d5db,-4px_0_0_0_#d1d5db,4px_0_0_0_#d1d5db]
               "
             >
-              <p className="text-xs sm:text-sm md:text-base font-bold text-center text-black">
-                Scroll down!
+              <p className="text-xs sm:text-sm md:text-base font-bold text-center text-black whitespace-normal">
+                Hei! Jeg heter Emilie. Velkommen til siden min, scroll ned for å
+                lese mer om min bakgrunn!
               </p>
             </div>
 
