@@ -20,7 +20,7 @@ const SocialLinks = () => {
     {
       id: 3,
       icon: <HiOutlineMail size={28} />, // HeroIcons run a bit smaller, so 28 looks better
-      url: "emilie.g.l@hotmail.com",
+      url: "mailto:emilie.g.l@hotmail.com",
       label: "Email",
       color: "hover:text-red-500",
     },

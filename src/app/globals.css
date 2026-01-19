@@ -25,9 +25,9 @@
   }
 } */
 
-html,
-body {
+html {
   height: 100%;
+  background-color: var(--background);
 }
 
 body {
@@ -37,10 +37,60 @@ body {
   font-optical-sizing: auto;
   margin: 0;
   padding: 0;
-  background-attachment: fixed;
-  background-size: cover;
-  background-repeat: no-repeat;
   min-height: 100vh;
+}
+
+/* Mobile-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific */
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Dedicated background layer for mobile to prevent white gaps */
+@media only screen and (max-width: 768px) {
+  html {
+    background: linear-gradient(135deg, var(--background) 0%, #f5f9ff 100%);
+    background-attachment: scroll;
+    min-height: 100%;
+  }
+
+  body {
+    background: linear-gradient(135deg, var(--background) 0%, #f5f9ff 100%);
+    background-attachment: scroll;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Alternative: use a fixed backdrop that won't scroll */
+  #__next {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  #__next::before {
+    content: "";
+    position: fixed;
+    top: -100vh;
+    left: 0;
+    right: 0;
+    height: 300vh;
+    background: linear-gradient(135deg, var(--background) 0%, #f5f9ff 100%);
+    z-index: -999;
+  }
+}
+
+/* Desktop keeps fixed attachment */
+@media only screen and (min-width: 769px) {
+  html,
+  body {
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 }
 
 header {
@@ -73,5 +123,11 @@ p {
   }
   .bg-background {
     background-color: var(--background);
+  }
+  .nav-link {
+    text-shadow: 0 0 0 transparent;
+  }
+  .nav-link:hover {
+    text-shadow: 0 0 0.5px currentColor;
   }
 }

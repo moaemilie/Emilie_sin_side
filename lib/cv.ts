@@ -7,11 +7,12 @@ interface CVSection {
   title: string;
   content: string;
   pxl_art: string;
+  pixel_comment: string;
 }
 
 export function getCVSections(): CVSection[] {
   const stmt = db.prepare(
-    "SELECT id, title, content, pxl_art FROM cv_sections"
+    "SELECT id, title, content, pxl_art, pixel_comment FROM cv_sections",
   );
   const sections = stmt.all() as CVSection[];
   return sections;
