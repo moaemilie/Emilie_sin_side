@@ -31,7 +31,7 @@ export default function PixelWalker({ activeComment }: PixelWalkerProps) {
   const walkerRef = useRef<HTMLDivElement>(null);
   const accumulatedScrollRef = useRef(0);
   const lastScrollY = useRef(0);
-  const lastCommentRef = useRef<string | null>(null);
+  const lastCommentRef = useRef<string | null | undefined>(null);
 
   // Mount detection
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PixelWalker({ activeComment }: PixelWalkerProps) {
 
       // Wait 300ms, then show the new comment
       const timer = setTimeout(() => {
-        setDisplayedComment(activeComment);
+        setDisplayedComment(activeComment ?? null);
         setShowComment(true);
       }, 300);
 
