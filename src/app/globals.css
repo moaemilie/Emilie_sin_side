@@ -61,6 +61,11 @@ p {
   font-family: var(--font-bodoni);
 }
 
+a {
+  color: var(--paragraph);
+  font-family: var(--font-bodoni);
+}
+
 @layer utilities {
   .text-foreground {
     color: var(--foreground);

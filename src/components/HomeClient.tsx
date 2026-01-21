@@ -36,7 +36,10 @@ export default function HomeClient({ sections }: HomeClientProps) {
     <div className="flex min-h-screen items-center justify-center">
       <main className="flex min-h-screen w-full flex-col items-center sm:items-center">
         {isMobile ? (
-          <StartContent />
+          <StartContent>
+            Hei! Jeg heter Emilie. Jeg er en kreativ utvikler med en lidenskap
+            for å skape. Scroll nedover for å se min bakgrunn.{" "}
+          </StartContent>
         ) : (
           <PixelWalker activeComment={activeComment} />
         )}
